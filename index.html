@@ -14,32 +14,24 @@
             justify-content: center;
             align-items: center;
             background-color: #000;
+            font-family: Arial, sans-serif;
         }
-        #image, #fullscreen-button {
+        #image, #message {
             display: none;
         }
         #image {
             max-width: 100%;
             max-height: 100%;
         }
-        #fullscreen-button {
-            padding: 20px 40px;
-            font-size: 24px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #007bff;
+        #message {
             color: white;
-            outline: none;
-        }
-        #fullscreen-button:hover {
-            background-color: #0056b3;
+            font-size: 40px;
         }
     </style>
 </head>
 <body>
     <img id="image" src="https://raw.githubusercontent.com/papaplaygamer10/Costa/78664099c290fbe0921709ed62b50bf4dc3b5b64/Screenshot_20250104_220048.jpg" alt="Welcome Image">
-    <button id="fullscreen-button">Fullscreen</button>
+    <div id="message">Hello World</div>
 
     <script>
         window.addEventListener('load', () => {
@@ -57,17 +49,14 @@
             requestFullScreen();
 
             const image = document.getElementById('image');
-            const button = document.getElementById('fullscreen-button');
+            const message = document.getElementById('message');
 
-            // Show image for 3 seconds, then show the button
+            // Show the image for 3 seconds, then show the message
             image.style.display = 'block';
             setTimeout(() => {
                 image.style.display = 'none';
-                button.style.display = 'block';
+                message.style.display = 'block';
             }, 3000);
-
-            // Button functionality to re-enter fullscreen if needed
-            button.addEventListener('click', requestFullScreen);
         });
     </script>
 </body>
