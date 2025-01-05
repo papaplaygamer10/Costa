@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Display with Buttons</title>
+    <title>User Input Form</title>
     <style>
         /* Ensure the body covers the entire screen */
         body {
@@ -82,6 +82,13 @@
             margin-bottom: 10px;
         }
 
+        .user-input-container select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
         .user-input-container button {
             padding: 10px 20px;
             background-color: green;
@@ -102,7 +109,7 @@
             cursor: pointer;
         }
 
-        /* File input as a button */
+        /* File input as a button for portrait photo */
         .file-input-button {
             padding: 10px 20px;
             background-color: #4CAF50; /* Green color */
@@ -114,15 +121,11 @@
             margin-top: 20px;
         }
 
-        /* Styling for the image preview */
-        .image-preview-container {
+        /* Styling for the upload message */
+        .upload-message {
             margin-top: 20px;
-        }
-
-        .image-preview-container img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
+            color: green;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -141,18 +144,44 @@
 
     <!-- User input form container -->
     <div class="user-input-container">
-        <h3>Enter Your Name</h3>
-        <input type="text" id="userName" placeholder="Your Name" />
-        <button onclick="submitName()">Submit</button>
+        <h3>Ingrese su Información</h3>
 
-        <!-- File input to upload an image -->
-        <input type="file" id="fileInput" class="file-input-button" accept="image/*" onchange="previewImage(event)"/>
+        <!-- Apellido field -->
+        <input type="text" id="apellido" placeholder="Apellido" required />
 
-        <!-- Image Preview Container -->
-        <div class="image-preview-container" id="imagePreviewContainer"></div>
+        <!-- Nombre field -->
+        <input type="text" id="nombre" placeholder="Nombre" required />
+
+        <!-- Sexo field -->
+        <select id="sexo">
+            <option value="" disabled selected>Sexo</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="O">Otro</option>
+        </select>
+
+        <!-- Fecha de Nacimiento field -->
+        <input type="date" id="fechaNacimiento" required />
+
+        <!-- DNI field -->
+        <input type="text" id="dni" placeholder="DNI" required />
+
+        <!-- Foto de rostro field -->
+        <label for="fotoRostro">Foto de Rostro</label>
+        <input type="file" id="fotoRostro" class="file-input-button" accept="image/*" onchange="uploadImage('rostro')"/>
+
+        <!-- Foto de firma field -->
+        <label for="fotoFirma">Foto de Firma</label>
+        <input type="file" id="fotoFirma" class="file-input-button" accept="image/*" onchange="uploadImage('firma')"/>
+
+        <!-- Upload success message -->
+        <div id="uploadMessage" class="upload-message"></div>
+
+        <!-- Submit button -->
+        <button onclick="submitForm()">Enviar</button>
 
         <!-- Back button to return to the original content -->
-        <button class="back-button" onclick="goBack()">Back</button>
+        <button class="back-button" onclick="goBack()">Volver</button>
     </div>
 
     <script>
@@ -192,10 +221,42 @@
             document.querySelector('.user-input-container').style.display = 'block';  // Show the input form
         }
 
+        // Handle image upload (display message, no preview)
+        function uploadImage(type) {
+            const fileInput = document.getElementById(type === 'rostro' ? 'fotoRostro' : 'fotoFirma');
+            const message = document.getElementById('uploadMessage');
+
+            // Check if the file is an image
+            const file = fileInput.files[0];
+            if (file && file.type.startsWith('image/')) {
+                message.textContent = 'Imagen subida correctamente';
+                message.style.color = 'green';
+
+                // Store the image file for later use (just as a placeholder here)
+                localStorage.setItem(type + 'Image', URL.createObjectURL(file)); // Storing the image URL in localStorage
+            } else {
+                message.textContent = 'Por favor seleccione un archivo de imagen válido.';
+                message.style.color = 'red';
+            }
+
+            // Clear the input for a new file selection
+            fileInput.value = ''; 
+        }
+
         // Function to handle form submission
-        function submitName() {
-            var name = document.getElementById("userName").value;
-            alert("Hello, " + name + "!"); // Show the name entered by the user
+        function submitForm() {
+            var apellido = document.getElementById("apellido").value;
+            var nombre = document.getElementById("nombre").value;
+            var sexo = document.getElementById("sexo").value;
+            var fechaNacimiento = document.getElementById("fechaNacimiento").value;
+            var dni = document.getElementById("dni").value;
+
+            alert("Información enviada:\n" + 
+                "Apellido: " + apellido + "\n" +
+                "Nombre: " + nombre + "\n" +
+                "Sexo: " + sexo + "\n" +
+                "Fecha de Nacimiento: " + fechaNacimiento + "\n" +
+                "DNI: " + dni);
         }
 
         // Go back to the original page content
@@ -203,27 +264,7 @@
             document.querySelector('.user-input-container').style.display = 'none';  // Hide the user input form
             document.querySelector('.image-container').style.display = 'flex';  // Show the image and buttons
         }
-
-        // Preview the uploaded image
-        function previewImage(event) {
-            const file = event.target.files[0];  // Get the file selected by the user
-
-            if (file && file.type.startsWith('image/')) {  // Check if it's an image
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = e.target.result;
-                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-                    imagePreviewContainer.innerHTML = '';  // Clear previous previews
-                    imagePreviewContainer.appendChild(imgElement);  // Display the selected image
-                };
-                reader.readAsDataURL(file);  // Read the file as data URL
-            } else {
-                alert('Please select a valid image file.');
-            }
-        }
     </script>
 
 </body>
-</html>
-
+</html
