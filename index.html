@@ -14,52 +14,57 @@
             justify-content: center;
             align-items: center;
             background-color: #000;
+            overflow: hidden; /* Prevent scrolling */
         }
 
-        /* Image Styling */
+        /* Image container */
         .image-container {
             position: relative;
-            width: 100%;  /* Ensure image is responsive */
-            height: 100%; /* Ensure image is responsive */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
         }
 
+        /* Make image responsive */
         img {
-            width: 100%;  /* Make sure the image fills the screen */
+            width: 100%; /* Make the image fit the width of the screen */
             height: auto; /* Maintain aspect ratio */
         }
 
         /* Styling for the buttons */
         .button {
-            position: absolute; /* Positioning buttons over the image */
-            padding: 40px 40px; /* Change the size of the buttons */
-            font-size: 16px; /* Change the font size */
-            border-radius: 10px; /* Change the shape of the button (rounded corners) */
+            position: absolute; /* Absolute positioning within the container */
+            padding: 15px 30px; /* Size of the button */
+            font-size: 16px; /* Font size of the text */
+            border-radius: 10px; /* Rounded corners */
             border: none; /* Remove default border */
-            cursor: pointer; /* Changes cursor when hovering over the button */
+            cursor: pointer; /* Cursor changes to pointer */
         }
 
         /* Grey button styling */
         .button-grey {
-            background-color: grey; /* Button color */
-            color: white; /* Text color */
-            top: 140%; /* Vertical position of the grey button (percentage of image height) */
-            left: 5.5%; /* Horizontal position of the grey button (percentage of image width) */
+            background-color: grey;
+            color: white;
+            top: 50%; /* Vertical position */
+            left: 10%; /* Horizontal position */
         }
 
         /* Green button styling */
         .button-green {
-            background-color: green; /* Button color */
-            color: white; /* Text color */
-            top: 10%; /* Vertical position of the green button */
-            left: 30%; /* Horizontal position of the green button */
+            background-color: green;
+            color: white;
+            top: 10%;
+            left: 30%;
         }
 
         /* Red button for fullscreen toggle */
         .button-red {
-            background-color: red; /* Red button color */
-            color: white; /* Text color */
-            top: 20%; /* Vertical position of the red button */
-            left: 10%; /* Horizontal position of the red button */
+            background-color: red;
+            color: white;
+            top: 20%;
+            left: 10%;
         }
     </style>
 </head>
@@ -110,6 +115,3 @@
 
 </body>
 </html>
-
-
-
