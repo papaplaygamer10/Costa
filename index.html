@@ -102,28 +102,27 @@
             cursor: pointer;
         }
 
-        /* Styling for drag-and-drop area */
-        .drop-area {
-            border: 2px dashed #ccc;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
+        /* File input as a button */
+        .file-input-button {
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             width: 100%;
-            height: 200px;
-            background-color: #f7f7f7;
-            text-align: center;
-            line-height: 150px;
-            color: #aaa;
+            margin-top: 20px;
         }
 
-        .drop-area img {
+        /* Styling for the image preview */
+        .image-preview-container {
+            margin-top: 20px;
+        }
+
+        .image-preview-container img {
             max-width: 100%;
-            max-height: 150px;
+            height: auto;
             margin-top: 10px;
-        }
-
-        .drop-area.dragover {
-            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -146,13 +145,11 @@
         <input type="text" id="userName" placeholder="Your Name" />
         <button onclick="submitName()">Submit</button>
 
-        <!-- Drag and Drop Area -->
-        <div class="drop-area" id="dropArea" ondrop="drop(event)" ondragover="allowDrop(event)">
-            Drag and drop an image here
-        </div>
+        <!-- File input to upload an image -->
+        <input type="file" id="fileInput" class="file-input-button" accept="image/*" onchange="previewImage(event)"/>
 
-        <!-- Display the dropped image -->
-        <div id="imagePreview"></div>
+        <!-- Image Preview Container -->
+        <div class="image-preview-container" id="imagePreviewContainer"></div>
 
         <!-- Back button to return to the original content -->
         <button class="back-button" onclick="goBack()">Back</button>
@@ -207,31 +204,26 @@
             document.querySelector('.image-container').style.display = 'flex';  // Show the image and buttons
         }
 
-        // Allow the drag to happen
-        function allowDrop(event) {
-            event.preventDefault();  // Prevent the default handling of the event (like opening the file)
-            event.target.classList.add('dragover');  // Add styling when dragging over
-        }
+        // Preview the uploaded image
+        function previewImage(event) {
+            const file = event.target.files[0];  // Get the file selected by the user
 
-        // Handle the drop action
-        function drop(event) {
-            event.preventDefault();  // Prevent the default handling of the event
-
-            event.target.classList.remove('dragover');  // Remove dragover style
-            const file = event.dataTransfer.files[0];  // Get the first file dropped
-
-            if (file && file.type.startsWith('image/')) {  // Check if the file is an image
+            if (file && file.type.startsWith('image/')) {  // Check if it's an image
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Dropped Image">`;  // Show the dropped image
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+                    imagePreviewContainer.innerHTML = '';  // Clear previous previews
+                    imagePreviewContainer.appendChild(imgElement);  // Display the selected image
                 };
-                reader.readAsDataURL(file);  // Read the image file as a data URL
+                reader.readAsDataURL(file);  // Read the file as data URL
             } else {
-                alert('Please drop a valid image file');
+                alert('Please select a valid image file.');
             }
         }
     </script>
 
 </body>
 </html>
+
