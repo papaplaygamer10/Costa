@@ -1,3 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Input Form</title>
+    <style>
+        /* Ensure the body covers the entire screen */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Image container */
+        .image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Make image responsive */
+        img {
+            width: 100%; /* Make the image fit the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Styling for the buttons */
+        .button {
+            position: absolute; /* Absolute positioning within the container */
+            padding: 15px 15px; /* Size of the button */
+            font-size: 1px; /* Font size of the text */
+            border-radius: 10px; /* Rounded corners */
+            border: none; /* Remove default border */
+            cursor: pointer; /* Cursor changes to pointer */
+            background-color: rgba(0, 0, 0, 0); /* Transparent background */
+            color: rgba(0, 0, 0, 0); /* Transparent text */
+            border: 2px solid rgba(255, 255, 255, 0); /* Transparent border */
+        }
+
+        /* Grey button styling */
+        .button-grey {
+            top: 55%; /* Vertical position */
+            left: 10%; /* Horizontal position */
+        }
+
+        /* Green button styling */
+        .button-green {
+            top: 2%;
+            left: 85%;
+        }
+
+        /* Red button for fullscreen toggle */
+        .button-red {
+            top: 70%;
+            left: 80%;
+        }
+
+        /* Styling for the user input form */
+        .user-input-container {
+            display: none; /* Hide the form by default */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .user-input-container input,
+        .user-input-container select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
         .user-input-container button {
             padding: 10px 20px;
             background-color: green;
