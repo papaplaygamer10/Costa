@@ -41,30 +41,89 @@
             border-radius: 10px; /* Rounded corners */
             border: none; /* Remove default border */
             cursor: pointer; /* Cursor changes to pointer */
+            background-color: rgba(0, 0, 0, 0); /* Transparent background */
+            color: rgba(0, 0, 0, 0); /* Transparent text */
+            border: 2px solid rgba(255, 255, 255, 0); /* Transparent border */
         }
 
         /* Grey button styling */
         .button-grey {
-            background-color: grey;
-            color: white;
             top: 55%; /* Vertical position */
             left: 10%; /* Horizontal position */
         }
 
         /* Green button styling */
         .button-green {
-            background-color: green;
-            color: white;
             top: 2%;
             left: 85%;
         }
 
         /* Red button for fullscreen toggle */
         .button-red {
-            background-color: red;
-            color: white;
             top: 70%;
             left: 80%;
+        }
+
+        /* Styling for the user input form */
+        .user-input-container {
+            display: none; /* Hide the form by default */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .user-input-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .user-input-container button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Back button style */
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Styling for drag-and-drop area */
+        .drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            width: 100%;
+            height: 200px;
+            background-color: #f7f7f7;
+            text-align: center;
+            line-height: 150px;
+            color: #aaa;
+        }
+
+        .drop-area img {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+        }
+
+        .drop-area.dragover {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -77,8 +136,26 @@
 
         <!-- Buttons -->
         <button class="button button-grey">g</button>
-        <button class="button button-green">Gr</button>
+        <button class="button button-green" onclick="showUserInput()">Gr</button>
         <button class="button button-red" onclick="toggleFullscreen()">F</button>
+    </div>
+
+    <!-- User input form container -->
+    <div class="user-input-container">
+        <h3>Enter Your Name</h3>
+        <input type="text" id="userName" placeholder="Your Name" />
+        <button onclick="submitName()">Submit</button>
+
+        <!-- Drag and Drop Area -->
+        <div class="drop-area" id="dropArea" ondrop="drop(event)" ondragover="allowDrop(event)">
+            Drag and drop an image here
+        </div>
+
+        <!-- Display the dropped image -->
+        <div id="imagePreview"></div>
+
+        <!-- Back button to return to the original content -->
+        <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
     <script>
@@ -111,8 +188,50 @@
                 }
             }
         }
+
+        // Show the user input form and hide the original content
+        function showUserInput() {
+            document.querySelector('.image-container').style.display = 'none';  // Hide the image and buttons
+            document.querySelector('.user-input-container').style.display = 'block';  // Show the input form
+        }
+
+        // Function to handle form submission
+        function submitName() {
+            var name = document.getElementById("userName").value;
+            alert("Hello, " + name + "!"); // Show the name entered by the user
+        }
+
+        // Go back to the original page content
+        function goBack() {
+            document.querySelector('.user-input-container').style.display = 'none';  // Hide the user input form
+            document.querySelector('.image-container').style.display = 'flex';  // Show the image and buttons
+        }
+
+        // Allow the drag to happen
+        function allowDrop(event) {
+            event.preventDefault();  // Prevent the default handling of the event (like opening the file)
+            event.target.classList.add('dragover');  // Add styling when dragging over
+        }
+
+        // Handle the drop action
+        function drop(event) {
+            event.preventDefault();  // Prevent the default handling of the event
+
+            event.target.classList.remove('dragover');  // Remove dragover style
+            const file = event.dataTransfer.files[0];  // Get the first file dropped
+
+            if (file && file.type.startsWith('image/')) {  // Check if the file is an image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Dropped Image">`;  // Show the dropped image
+                };
+                reader.readAsDataURL(file);  // Read the image file as a data URL
+            } else {
+                alert('Please drop a valid image file');
+            }
+        }
     </script>
 
 </body>
 </html>
-
