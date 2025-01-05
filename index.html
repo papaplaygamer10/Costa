@@ -1,94 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Input Form</title>
-    <style>
-        /* Ensure the body covers the entire screen */
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000;
-            overflow: hidden; /* Prevent scrolling */
-        }
-
-        /* Image container */
-        .image-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        /* Make image responsive */
-        img {
-            width: 100%; /* Make the image fit the width of the screen */
-            height: auto; /* Maintain aspect ratio */
-        }
-
-        /* Styling for the buttons */
-        .button {
-            position: absolute; /* Absolute positioning within the container */
-            padding: 15px 15px; /* Size of the button */
-            font-size: 1px; /* Font size of the text */
-            border-radius: 10px; /* Rounded corners */
-            border: none; /* Remove default border */
-            cursor: pointer; /* Cursor changes to pointer */
-            background-color: rgba(0, 0, 0, 0); /* Transparent background */
-            color: rgba(0, 0, 0, 0); /* Transparent text */
-            border: 2px solid rgba(255, 255, 255, 0); /* Transparent border */
-        }
-
-        /* Grey button styling */
-        .button-grey {
-            top: 55%; /* Vertical position */
-            left: 10%; /* Horizontal position */
-        }
-
-        /* Green button styling */
-        .button-green {
-            top: 2%;
-            left: 85%;
-        }
-
-        /* Red button for fullscreen toggle */
-        .button-red {
-            top: 70%;
-            left: 80%;
-        }
-
-        /* Styling for the user input form */
-        .user-input-container {
-            display: none; /* Hide the form by default */
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .user-input-container input {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .user-input-container select {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
         .user-input-container button {
             padding: 10px 20px;
             background-color: green;
@@ -121,11 +30,9 @@
             margin-top: 20px;
         }
 
-        /* Styling for the upload message */
-        .upload-message {
-            margin-top: 20px;
-            color: green;
-            font-size: 16px;
+        /* Hide the "ningún archivo seleccionado" message */
+        input[type="file"]::file-selector-button {
+            display: none;
         }
     </style>
 </head>
@@ -168,14 +75,11 @@
 
         <!-- Foto de rostro field -->
         <label for="fotoRostro">Foto de Rostro</label>
-        <input type="file" id="fotoRostro" class="file-input-button" accept="image/*" onchange="uploadImage('rostro')"/>
+        <input type="file" id="fotoRostro" class="file-input-button" accept="image/*" onchange="validateImage(event)" />
 
         <!-- Foto de firma field -->
         <label for="fotoFirma">Foto de Firma</label>
-        <input type="file" id="fotoFirma" class="file-input-button" accept="image/*" onchange="uploadImage('firma')"/>
-
-        <!-- Upload success message -->
-        <div id="uploadMessage" class="upload-message"></div>
+        <input type="file" id="fotoFirma" class="file-input-button" accept="image/*" onchange="validateImage(event)" />
 
         <!-- Submit button -->
         <button onclick="submitForm()">Enviar</button>
@@ -187,60 +91,17 @@
     <script>
         // Function to toggle fullscreen
         function toggleFullscreen() {
-            if (!document.fullscreenElement &&    // Check if fullscreen is not active
-                !document.webkitFullscreenElement && 
-                !document.mozFullScreenElement && 
-                !document.msFullscreenElement) {  // Check for browser-specific fullscreen elements
-
-                // Request fullscreen for the body
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
-            } else {  // If fullscreen is active, exit fullscreen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
             }
         }
 
         // Show the user input form and hide the original content
         function showUserInput() {
-            document.querySelector('.image-container').style.display = 'none';  // Hide the image and buttons
-            document.querySelector('.user-input-container').style.display = 'block';  // Show the input form
-        }
-
-        // Handle image upload (display message, no preview)
-        function uploadImage(type) {
-            const fileInput = document.getElementById(type === 'rostro' ? 'fotoRostro' : 'fotoFirma');
-            const message = document.getElementById('uploadMessage');
-
-            // Check if the file is an image
-            const file = fileInput.files[0];
-            if (file && file.type.startsWith('image/')) {
-                message.textContent = 'Imagen subida correctamente';
-                message.style.color = 'green';
-
-                // Store the image file for later use (just as a placeholder here)
-                localStorage.setItem(type + 'Image', URL.createObjectURL(file)); // Storing the image URL in localStorage
-            } else {
-                message.textContent = 'Por favor seleccione un archivo de imagen válido.';
-                message.style.color = 'red';
-            }
-
-            // Clear the input for a new file selection
-            fileInput.value = ''; 
+            document.querySelector('.image-container').style.display = 'none';
+            document.querySelector('.user-input-container').style.display = 'block';
         }
 
         // Function to handle form submission
@@ -251,7 +112,7 @@
             var fechaNacimiento = document.getElementById("fechaNacimiento").value;
             var dni = document.getElementById("dni").value;
 
-            alert("Información enviada:\n" + 
+            alert("Información enviada:\n" +
                 "Apellido: " + apellido + "\n" +
                 "Nombre: " + nombre + "\n" +
                 "Sexo: " + sexo + "\n" +
@@ -261,10 +122,18 @@
 
         // Go back to the original page content
         function goBack() {
-            document.querySelector('.user-input-container').style.display = 'none';  // Hide the user input form
-            document.querySelector('.image-container').style.display = 'flex';  // Show the image and buttons
+            document.querySelector('.user-input-container').style.display = 'none';
+            document.querySelector('.image-container').style.display = 'flex';
+        }
+
+        // Validate the uploaded file (optional placeholder logic)
+        function validateImage(event) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Por favor seleccione un archivo de imagen válido.');
+            }
         }
     </script>
 
 </body>
-</html
+</html>
