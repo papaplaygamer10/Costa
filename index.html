@@ -14,13 +14,18 @@
             justify-content: center;
             align-items: center;
             background-color: #000;
-            position: relative; /* Allows absolute positioning of buttons */
         }
 
         /* Image Styling */
+        .image-container {
+            position: relative;
+            width: 100%;  /* Ensure image is responsive */
+            height: 100%; /* Ensure image is responsive */
+        }
+
         img {
-            max-width: 100%;  /* Make sure the image is responsive */
-            max-height: 100%; /* Make sure the image fits the screen */
+            width: 100%;  /* Make sure the image fills the screen */
+            height: auto; /* Maintain aspect ratio */
         }
 
         /* Styling for the buttons */
@@ -37,27 +42,71 @@
         .button-grey {
             background-color: grey; /* Button color */
             color: white; /* Text color */
-            top: 450px; /* Vertical position of the grey button */
-            left: 100px; /* Horizontal position of the grey button */
+            top: 10%; /* Vertical position of the grey button (percentage of image height) */
+            left: 10%; /* Horizontal position of the grey button (percentage of image width) */
         }
 
         /* Green button styling */
         .button-green {
             background-color: green; /* Button color */
             color: white; /* Text color */
-            top: 50px; /* Vertical position of the green button */
-            left: 150px; /* Horizontal position of the green button */
+            top: 10%; /* Vertical position of the green button */
+            left: 30%; /* Horizontal position of the green button */
+        }
+
+        /* Red button for fullscreen toggle */
+        .button-red {
+            background-color: red; /* Red button color */
+            color: white; /* Text color */
+            top: 20%; /* Vertical position of the red button */
+            left: 10%; /* Horizontal position of the red button */
         }
     </style>
 </head>
 <body>
 
-    <!-- Display the Image -->
-    <img src="https://raw.githubusercontent.com/papaplaygamer10/Costa/refs/heads/main/Screenshot_20250104_222753.jpg" alt="Image">
+    <!-- Image container to hold the image and buttons -->
+    <div class="image-container">
+        <!-- Display the Image -->
+        <img src="https://raw.githubusercontent.com/papaplaygamer10/Costa/refs/heads/main/Screenshot_20250104_222753.jpg" alt="Image">
 
-    <!-- Buttons -->
-    <button class="button button-grey">Grey Button</button>
-    <button class="button button-green">Green Button</button>
+        <!-- Buttons -->
+        <button class="button button-grey">Grey Button</button>
+        <button class="button button-green">Green Button</button>
+        <button class="button button-red" onclick="toggleFullscreen()">Toggle Fullscreen</button>
+    </div>
+
+    <script>
+        // Function to toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement &&    // Check if fullscreen is not active
+                !document.webkitFullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.msFullscreenElement) {  // Check for browser-specific fullscreen elements
+
+                // Request fullscreen for the body
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            } else {  // If fullscreen is active, exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
