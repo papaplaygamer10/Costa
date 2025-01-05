@@ -3,70 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen with Image</title>
+    <title>Image Display with Buttons</title>
     <style>
-        body, html {
+        /* Ensure the body covers the entire screen */
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #000;
-            font-family: Arial, sans-serif;
+            position: relative; /* Allows absolute positioning of buttons */
         }
-        #image, #message {
-            display: none;
+
+        /* Image Styling */
+        img {
+            max-width: 100%;  /* Make sure the image is responsive */
+            max-height: 100%; /* Make sure the image fits the screen */
         }
-        #image {
-            max-width: 100%;
-            max-height: 100%;
+
+        /* Styling for the buttons */
+        .button {
+            position: absolute; /* Positioning buttons over the image */
+            padding: 15px 30px; /* Change the size of the buttons */
+            font-size: 16px; /* Change the font size */
+            border-radius: 10px; /* Change the shape of the button (rounded corners) */
+            border: none; /* Remove default border */
+            cursor: pointer; /* Changes cursor when hovering over the button */
         }
-        #message {
-            color: white;
-            font-size: 40px;
+
+        /* Grey button styling */
+        .button-grey {
+            background-color: grey; /* Button color */
+            color: white; /* Text color */
+            top: 450px; /* Vertical position of the grey button */
+            left: 100px; /* Horizontal position of the grey button */
+        }
+
+        /* Green button styling */
+        .button-green {
+            background-color: green; /* Button color */
+            color: white; /* Text color */
+            top: 50px; /* Vertical position of the green button */
+            left: 150px; /* Horizontal position of the green button */
         }
     </style>
 </head>
 <body>
-    <img id="image" src="https://raw.githubusercontent.com/papaplaygamer10/Costa/78664099c290fbe0921709ed62b50bf4dc3b5b64/Screenshot_20250104_220048.jpg" alt="Welcome Image">
-    <div id="message">Hello World</div>
 
-    <script>
-        // This function will try to make the page fullscreen
-        function requestFullScreen() {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { // Safari
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { // IE11
-                document.documentElement.msRequestFullscreen();
-            }
-        }
+    <!-- Display the Image -->
+    <img src="https://raw.githubusercontent.com/papaplaygamer10/Costa/refs/heads/main/Screenshot_20250104_222753.jpg" alt="Image">
 
-        // Wait for the window to load before triggering fullscreen
-        window.addEventListener('load', () => {
-            // Check if fullscreen request can be made
-            if (document.documentElement.requestFullscreen) {
-                // Try entering fullscreen mode right away
-                requestFullScreen();
-            }
+    <!-- Buttons -->
+    <button class="button button-grey">Grey Button</button>
+    <button class="button button-green">Green Button</button>
 
-            const image = document.getElementById('image');
-            const message = document.getElementById('message');
-
-            // Show the image for 3 seconds, then show the "Hello World" message
-            image.style.display = 'block';
-            setTimeout(() => {
-                image.style.display = 'none';
-                message.style.display = 'block';
-            }, 3000);
-        });
-    </script>
-</body>
-</html>
-
-    </script>
 </body>
 </html>
